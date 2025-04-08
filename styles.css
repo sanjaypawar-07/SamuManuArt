@@ -50,7 +50,7 @@ h1 {
   margin: 0 0 20px;
   width: 100%;
   break-inside: avoid;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   border-radius: 10px;
   overflow: hidden;
   transition: transform 0.3s ease;
@@ -73,7 +73,7 @@ h1 {
 
 .info h3 {
   margin: 5px 0 5px;
-  font-size: 15px;
+  font-size: 25px;
   color: #333;
 }
 
