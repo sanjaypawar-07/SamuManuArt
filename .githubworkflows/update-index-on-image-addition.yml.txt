@@ -1,0 +1,44 @@
+name: Update index.html on new images
+
+on:
+  push:
+    paths:
+      - "images/**" # Trigger only when files in the images folder change
+
+jobs:
+  update-html:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 2: List new images added in the push
+    - name: Find new images
+      id: new_images
+      run: |
+        git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^images/' > new_images.txt || echo "No new images found"
+
+    # Step 3: Update index.html
+    - name: Update index.html
+      if: ${{ steps.new_images.outputs.new_images != '' }}
+      run: |
+        if [ -s new_images.txt ]; then
+          echo "New images found. Updating index.html..."
+          while read -r file; do
+            echo "<img src=\"$file\" alt=\"New Image\">" >> index.html
+          done < new_images.txt
+        else
+          echo "No new images found. Skipping update."
+        fi
+
+    # Step 4: Commit and push changes
+    - name: Commit and push changes
+      if: ${{ steps.new_images.outputs.new_images != '' }}
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add index.html
+        git commit -m "Update index.html with new images"
+        git push origin ${{ github.ref }}
