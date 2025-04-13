@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />        
 </head>
 <body>
     <header>
@@ -19,6 +21,7 @@
         <h2>Each painting is a reflection of what they’re discovering, trying, and enjoying along the way. This site is a space to capture that journey, and to encourage other young minds to explore with art.</h2>
     </header>
     <main>
+    <div class="slideshow">
         <div class="gallery">
             <div class="art-card">
                 <a href="images/painting1.jpg" data-lightbox="gallery" data-title="Sita Ramam - 12 March 2024">
@@ -272,7 +275,26 @@
             
         
         </div>
+</div>
     </main>
+ 
+    <script>
+    $(document).ready(function(){
+        $('.slideshow').slick({
+            dots: true,
+            infinite: true,
+            speed: 500,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            adaptiveHeight: true
+        });
+    });
+</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    
 </body>
 </html>
