@@ -5,412 +5,415 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Samu Manu Art Gallery showcasing art pieces by Samu and Manu.">
     <title>Samu Manu Art Gallery</title>
-    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Google Fonts: Comic Neue for body, Fredoka One for headings -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&family=Baumans&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet" />
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <meta property="og:title" content="Samu Manu Art" />
-    <meta property="og:description" content="Artworks stemmed from curiosity, exploration, and imagination." />
-    <meta property="og:image" content="https://sanjaypawar-07.github.io/SamuManuArt/images/painting27.jpg" />
-    <meta property="og:url" content="https://sanjaypawar-07.github.io/SamuManuArt/" />
-    <meta property="og:type" content="website" />
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #fdfcf0; /* Warm paper color */
+            --card-bg: #ffffff;
+            --text-color: #4a4a4a;
+            --accent-color: #ff6b6b; /* Playful coral red */
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Comic Neue', cursive;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e0e0e0 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- Background Animation --- */
+        .background-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            bottom: -100px;
+            opacity: 0.6;
+            animation: floatUp 15s infinite linear;
+        }
+
+        /* Define specific shapes using CSS */
+        .shape.circle {
+            width: 60px;
+            height: 60px;
+            background-color: #ffcccc;
+            border-radius: 50%;
+        }
+        .shape.square {
+            width: 50px;
+            height: 50px;
+            background-color: #ccffcc;
+            transform: rotate(45deg);
+        }
+        .shape.triangle {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 50px solid #ccccff;
+        }
+
+        /* Vary animation duration and positions */
+        .shape:nth-child(1) { left: 10%; animation-duration: 25s; animation-delay: 0s; transform: scale(0.8); }
+        .shape:nth-child(2) { left: 25%; animation-duration: 18s; animation-delay: 5s; background-color: #fff5cc; } 
+        .shape:nth-child(3) { left: 40%; animation-duration: 22s; animation-delay: 2s; }
+        .shape:nth-child(4) { left: 70%; animation-duration: 20s; animation-delay: 8s; background-color: #e0f7fa; }
+        .shape:nth-child(5) { left: 85%; animation-duration: 28s; animation-delay: 1s; transform: scale(1.2); }
+        .shape:nth-child(6) { left: 55%; animation-duration: 24s; animation-delay: 12s; background-color: #f3e5f5; border-radius: 50%; width: 40px; height: 40px; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- Header Section --- */
+        header {
+            text-align: center;
+            padding: 3rem 1rem 1rem; /* Slightly less padding since filters are gone */
+            background: linear-gradient(to bottom, rgba(255,255,255,0.9), transparent);
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3.5rem;
+            color: var(--accent-color);
+            margin: 0;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px #fad0c4;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 1rem auto;
+            line-height: 1.6;
+            font-weight: bold;
+            background: rgba(255,255,255,0.8);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        /* --- Gallery Grid --- */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .gallery {
+            display: grid;
+            /* Adjusted minmax to 260px for better fit on small mobile screens */
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 40px;
+            padding-bottom: 50px;
+        }
+
+        /* --- Polaroid Card Style --- */
+        .art-card {
+            background: var(--card-bg);
+            padding: 15px 15px 50px 15px; 
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            transform: rotate(var(--rotation)); 
+            border: 1px solid #eee;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            /* Ensure text doesn't blur during rotation on some browsers */
+            backface-visibility: hidden; 
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .art-card:hover {
+            z-index: 10;
+            transform: scale(1.05) rotate(0deg) !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .art-card::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-left: 1px dashed rgba(0,0,0,0.1);
+            border-right: 1px dashed rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+
+        .art-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            display: block;
+        }
+
+        .card-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-info h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #333;
+            font-family: 'Comic Neue', cursive; 
+        }
+
+        .card-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* --- Lightbox Modal --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-img {
+            max-width: 90%;
+            max-height: 80vh;
+            border: 5px solid white;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .modal-caption {
+            color: white;
+            margin-top: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            user-select: none;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* Responsive Tweaks */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .gallery { 
+                grid-template-columns: 1fr; /* Full width on mobile */
+                gap: 30px; 
+                padding: 10px 20px;
+            }
+            .art-card { 
+                transform: rotate(0deg); /* No rotation on mobile for cleaner scroll */
+                margin-bottom: 10px;
+            } 
+            .art-card:hover {
+                 transform: scale(1.02) !important;
+            }
+            .subtitle { font-size: 1rem; }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Floating Background Shapes -->
+    <div class="background-shapes">
+        <div class="shape circle"></div>
+        <div class="shape square"></div>
+        <div class="shape triangle"></div>
+        <div class="shape circle" style="background-color: #ffecb3;"></div>
+        <div class="shape square" style="background-color: #d1c4e9;"></div>
+        <div class="shape triangle" style="border-bottom-color: #b2dfdb;"></div>
+    </div>
+
     <header>
         <h1>Samu Manu Art Gallery</h1>
-        <h2>Samu and Manu are on a journey of exploring the world through colours, shapes, and imagination. Their art is not about perfection—it's about curiosity, learning, and the joy of expression.</h2>
-        <h2>Each painting is a reflection of what they’re discovering, trying, and enjoying along the way. This site is a space to capture that journey, and to encourage other young minds to explore.</h2>
+        <div class="subtitle">
+            <p>A journey of exploring the world through colours, shapes, and imagination.</p>
+        </div>
     </header>
-    
+
     <main>
-        <div class="gallery">
-<figure class="art-card">
-  <a href="images/painting28.jpg" data-lightbox="gallery" data-title="Shiva Parvati - May 2025">
-    <img src="images/painting28.jpg" alt="Shiva Parvati by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Shiva Parvati</h3>
-    <p>May 2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting27.jpg" data-lightbox="gallery" data-title="Sita Ramam 2.0 - April 2025">
-    <img src="images/painting27.jpg" alt="Sita Ramam 2.0 by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Sita Ramam 2.0</h3>
-    <p>April 2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting1.jpg" data-lightbox="gallery" data-title="Sita Ramam - March 2024">
-    <img src="images/painting1.jpg" alt="Sita Ramam by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Sita Ramam</h3>
-    <p>March 2024</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting2.jpg" data-lightbox="gallery" data-title="Jai Shree Krishna - Unknown date">
-    <img src="images/painting2.jpg" alt="Jai Shree Krishna by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Jai Shree Krishna</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting3.jpg" data-lightbox="gallery" data-title="Warmth and Love - Unknown date">
-    <img src="images/painting3.jpg" alt="Warmth and Love by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Warmth and Love</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting4.jpg" data-lightbox="gallery" data-title="Happy Holi! - March 2024">
-    <img src="images/painting4.jpg" alt="Happy Holi! by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Happy Holi!</h3>
-    <p>March 2024</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting5.jpg" data-lightbox="gallery" data-title="Ganeshay Namah - December 2023">
-    <img src="images/painting5.jpg" alt="Ganeshay Namah by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Ganeshay Namah</h3>
-    <p>December 2023</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting6.jpg" data-lightbox="gallery" data-title="Family Time - November 2023">
-    <img src="images/painting6.jpg" alt="Family Time by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Family Time</h3>
-    <p>November 2023</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting7.jpg" data-lightbox="gallery" data-title="Shiv Parivar - February 2023">
-    <img src="images/painting7.jpg" alt="Shiv Parivar by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Shiv Parivar</h3>
-    <p>February 2023</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting8.jpg" data-lightbox="gallery" data-title="Devotion - January 2024">
-    <img src="images/painting8.jpg" alt="Devotion by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Devotion</h3>
-    <p>January 2024</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting9.jpg" data-lightbox="gallery" data-title="Shivay - Unknown date">
-    <img src="images/painting9.jpg" alt="Shivay by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Shivay</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting10.jpg" data-lightbox="gallery" data-title="Radha Krishna - Unknown date">
-    <img src="images/painting10.jpg" alt="Radha Krishna by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Radha Krishna</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting11.jpg" data-lightbox="gallery" data-title="Tridevi - Unknown date">
-    <img src="images/painting11.jpg" alt="Tridevi by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Tridevi</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting12.jpg" data-lightbox="gallery" data-title="Welcome to Dholakpur - Unknown date">
-    <img src="images/painting12.jpg" alt="Welcome to Dholakpur by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Welcome to Dholakpur</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting13.jpg" data-lightbox="gallery" data-title="Shri Mann Narayan - Unknown date">
-    <img src="images/painting13.jpg" alt="Shri Mann Narayan by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Shri Mann Narayan</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting14.jpg" data-lightbox="gallery" data-title="Durga Maa - Unknown date">
-    <img src="images/painting14.jpg" alt="Durga Maa by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Durga Maa</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting15.jpg" data-lightbox="gallery" data-title="Jai Jagannath - Unknown date">
-    <img src="images/painting15.jpg" alt="Jai Jagannath by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Jai Jagannath</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting16.jpg" data-lightbox="gallery" data-title="Jaanta Raja - Unknown date">
-    <img src="images/painting16.jpg" alt="Jaanta Raja by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Jaanta Raja</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting17.jpg" data-lightbox="gallery" data-title="Bansuriwala - Unknown date">
-    <img src="images/painting17.jpg" alt="Bansuriwala by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Bansuriwala</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting18.jpg" data-lightbox="gallery" data-title="Ganpati Bappa - Unknown date">
-    <img src="images/painting18.jpg" alt="Ganpati Bappa by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Ganpati Bappa</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-            
-<figure class="art-card">
-  <a href="images/painting19.jpg" data-lightbox="gallery" data-title="The Night Sky - April 2025">
-    <img src="images/painting19.jpg" alt="The Night Sky by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>The Night Sky</h3>
-    <p>April 2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting20.jpg" data-lightbox="gallery" data-title="A Cloudy Evening - April 2025">
-    <img src="images/painting20.jpg" alt="A Cloudy Evening by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>A Cloudy Evening</h3>
-    <p>April 2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting21.jpg" data-lightbox="gallery" data-title="Little Krisha - Unknown date">
-    <img src="images/painting21.jpg" alt="Little Krisha by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Little Krisha</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting22.jpg" data-lightbox="gallery" data-title="Future is Promising - Unknown date">
-    <img src="images/painting22.jpg" alt="Future is Promising by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Future is Promising</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting23.jpg" data-lightbox="gallery" data-title="Natkhat Krishna - Unknown date">
-    <img src="images/painting23.jpg" alt="Natkhat Krishna by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Natkhat Krishna</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting24.jpg" data-lightbox="gallery" data-title="Family Trip - Unknown date">
-    <img src="images/painting24.jpg" alt="Family Trip by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Family Trip</h3>
-    <p>Unknown date</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting25.jpg" data-lightbox="gallery" data-title="Coconut Water To Beat The Heat - September 2024">
-    <img src="images/painting25.jpg" alt="Coconut Water To Beat The Heat by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Coconut Water To Beat The Heat</h3>
-    <p>September 2024</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting26.jpg" data-lightbox="gallery" data-title="Veermata Jijau - July 2024">
-    <img src="images/painting26.jpg" alt="Veermata Jijau by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Veermata Jijau</h3>
-    <p>July 2024</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting29.jpg" data-lightbox="gallery" data-title="Pichwai Art Using Earbuds - 2025">
-    <img src="images/painting29.jpg" alt="Pichwai Art Using Earbuds by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Pichwai Art Using Earbuds</h3>
-    <p>2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting30.jpg" data-lightbox="gallery" data-title="Morpankh - 2025">
-    <img src="images/painting30.jpg" alt="Morpankh by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Morpankh</h3>
-    <p>2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting31.jpg" data-lightbox="gallery" data-title="Banana - 2025">
-    <img src="images/painting31.jpg" alt="Banana by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Banana</h3>
-    <p>2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting32.jpg" data-lightbox="gallery" data-title="House by Seashore - 2025">
-    <img src="images/painting32.jpg" alt="House by Seashore by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>House by Seashore</h3>
-    <p>2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting33.jpg" data-lightbox="gallery" data-title="Abstract Parrot - 2025">
-    <img src="images/painting33.jpg" alt="Abstract Parrot by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Abstract Parrot</h3>
-    <p>2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting34.jpg" data-lightbox="gallery" data-title="Riverside - 2025">
-    <img src="images/painting34.jpg" alt="Riverside by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Riverside</h3>
-    <p>2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting36.jpg" data-lightbox="gallery" data-title="Flower Vase Using Earbuds - 2025">
-    <img src="images/painting36.jpg" alt="Flower Vase Using Earbuds by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Flower Vase Using Earbuds</h3>
-    <p>2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting37.jpg" data-lightbox="gallery" data-title="Floral Night Lamp - 2025">
-    <img src="images/painting37.jpg" alt="Floral Night Lamp by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Floral Night Lamp</h3>
-    <p>2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting38.jpg" data-lightbox="gallery" data-title="A Glass Half Full - 2025">
-    <img src="images/painting38.jpg" alt="A Glass Half Full by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>A Glass Half Full</h3>
-    <p>2025</p>
-  </figcaption>
-</figure>
-
-<figure class="art-card">
-  <a href="images/painting39.jpg" data-lightbox="gallery" data-title="Riverside 2 - 2025">
-    <img src="images/painting39.jpg" alt="Riverside 2 by Samu and Manu">
-  </a>
-  <figcaption>
-    <h3>Riverside 2</h3>
-    <p>2025</p>
-  </figcaption>
-</figure>
- </div>
+        <div class="gallery" id="gallery-container">
+            <!-- Art cards will be injected here by JS -->
+        </div>
     </main>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
+    <!-- Modal for viewing images -->
+    <div class="modal" id="imageModal" onclick="closeModal()">
+        <span class="close-btn">&times;</span>
+        <img class="modal-img" id="modalImage" src="" alt="">
+        <div class="modal-caption" id="modalCaption"></div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION: ADD NEW PAINTINGS HERE
+        // ==========================================
+        const artworks = [
+            // Just copy a line, paste it, and change the details!
+            { src: "images/painting28.jpg", title: "Shiva Parvati", date: "May 2025" },
+            { src: "images/painting27.jpg", title: "Sita Ramam 2.0", date: "April 2025" },
+            { src: "images/painting19.jpg", title: "The Night Sky", date: "April 2025" },
+            { src: "images/painting20.jpg", title: "A Cloudy Evening", date: "April 2025" },
+            { src: "images/painting29.jpg", title: "Pichwai Art", date: "2025" },
+            { src: "images/painting30.jpg", title: "Morpankh", date: "2025" },
+            { src: "images/painting31.jpg", title: "Banana", date: "2025" },
+            { src: "images/painting32.jpg", title: "House by Seashore", date: "2025" },
+            { src: "images/painting33.jpg", title: "Abstract Parrot", date: "2025" },
+            { src: "images/painting34.jpg", title: "Riverside", date: "2025" },
+            { src: "images/painting36.jpg", title: "Flower Vase", date: "2025" },
+            { src: "images/painting37.jpg", title: "Floral Night Lamp", date: "2025" },
+            { src: "images/painting38.jpg", title: "Glass Half Full", date: "2025" },
+            { src: "images/painting39.jpg", title: "Riverside 2", date: "2025" },
+            { src: "images/painting25.jpg", title: "Coconut Water", date: "September 2024" },
+            { src: "images/painting26.jpg", title: "Veermata Jijau", date: "July 2024" },
+            { src: "images/painting1.jpg", title: "Sita Ramam", date: "March 2024" },
+            { src: "images/painting4.jpg", title: "Happy Holi!", date: "March 2024" },
+            { src: "images/painting8.jpg", title: "Devotion", date: "January 2024" },
+            { src: "images/painting5.jpg", title: "Ganeshay Namah", date: "December 2023" },
+            { src: "images/painting6.jpg", title: "Family Time", date: "November 2023" },
+            { src: "images/painting7.jpg", title: "Shiv Parivar", date: "February 2023" },
+            { src: "images/painting2.jpg", title: "Jai Shree Krishna", date: "Unknown" },
+            { src: "images/painting3.jpg", title: "Warmth and Love", date: "Unknown" },
+            { src: "images/painting9.jpg", title: "Shivay", date: "Unknown" },
+            { src: "images/painting10.jpg", title: "Radha Krishna", date: "Unknown" },
+            { src: "images/painting11.jpg", title: "Tridevi", date: "Unknown" },
+            { src: "images/painting12.jpg", title: "Welcome to Dholakpur", date: "Unknown" },
+            { src: "images/painting13.jpg", title: "Shri Mann Narayan", date: "Unknown" },
+            { src: "images/painting14.jpg", title: "Durga Maa", date: "Unknown" },
+            { src: "images/painting15.jpg", title: "Jai Jagannath", date: "Unknown" },
+            { src: "images/painting16.jpg", title: "Jaanta Raja", date: "Unknown" },
+            { src: "images/painting17.jpg", title: "Bansuriwala", date: "Unknown" },
+            { src: "images/painting18.jpg", title: "Ganpati Bappa", date: "Unknown" },
+            { src: "images/painting21.jpg", title: "Little Krishna", date: "Unknown" },
+            { src: "images/painting22.jpg", title: "Future is Promising", date: "Unknown" },
+            { src: "images/painting23.jpg", title: "Natkhat Krishna", date: "Unknown" },
+            { src: "images/painting24.jpg", title: "Family Trip", date: "Unknown" }
+        ];
+
+        const galleryContainer = document.getElementById('gallery-container');
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCap = document.getElementById('modalCaption');
+
+        // Render Gallery
+        function renderGallery(items) {
+            galleryContainer.innerHTML = ''; 
+
+            items.forEach((art, index) => {
+                // Create Card
+                const card = document.createElement('div');
+                card.className = 'art-card';
+                
+                // Randomize rotation slightly for organic feel (-3deg to 3deg)
+                // Note: CSS Media query disables this on mobile for better usability
+                const rotation = Math.floor(Math.random() * 6) - 3;
+                card.style.setProperty('--rotation', `${rotation}deg`);
+                
+                // Animation delay for staggered load
+                card.style.animationDelay = `${index * 0.05}s`;
+
+                // Inner HTML
+                card.innerHTML = `
+                    <img src="${art.src}" alt="${art.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300?text=Art+Loading...'">
+                    <div class="card-info">
+                        <h3>${art.title}</h3>
+                        <p>${art.date}</p>
+                    </div>
+                `;
+
+                // Click event for Lightbox
+                card.onclick = () => openModal(art.src, `${art.title} (${art.date})`);
+
+                galleryContainer.appendChild(card);
+            });
+        }
+
+        // Modal Logic
+        function openModal(src, caption) {
+            modal.classList.add('active');
+            modalImg.src = src;
+            modalCap.textContent = caption;
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Initialize
+        renderGallery(artworks);
+
+    </script>
 </body>
 </html>
-
-
-
-
